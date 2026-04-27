@@ -47,7 +47,7 @@ otc_efg_config = {
         "amsgrad": False,
     },
     "loss_fn": torch.nn.L1Loss(),
-    "device": torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+    "device": torch.device("mps" if torch.backends.mps.is_available() else "cpu"),
     "verbose": True,
     "track_time": True,
     "skip_cache": False,

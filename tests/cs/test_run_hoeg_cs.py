@@ -5,7 +5,7 @@ import functools
 import json
 import os
 
-os.chdir("/home/tim/Development/OCPPM/")
+os.chdir("/Users/jannis.poltier/Developer/OCPPM")
 import logging
 import pickle
 import random
@@ -91,7 +91,7 @@ cs_hoeg_config = {
     "loss_fn": torch.nn.L1Loss(),
     "verbose": True,
     "skip_cache": False,
-    "device": torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+    "device": torch.device("mps" if torch.backends.mps.is_available() else "cpu"),
 }
 
 # CONFIGURATION ADAPTATIONS may be set here

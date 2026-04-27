@@ -55,7 +55,7 @@ cs_hoeg_config = {
     "loss_fn": torch.nn.L1Loss(),
     "verbose": True,
     "skip_cache": False,
-    "device": torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+    "device": torch.device("mps" if torch.backends.mps.is_available() else "cpu"),
     "squeeze": True,
     "track_time": True,
 }

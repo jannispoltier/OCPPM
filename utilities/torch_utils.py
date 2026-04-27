@@ -23,13 +23,10 @@ def count_parameters(model: GraphModel) -> int:
 
 
 def __add_cores_to_cpu_info(cpu_info_str: str, num_cores: int) -> str:
-    # Split the CPU information string using "@" as the delimiter
     parts = cpu_info_str.split("@")
-
-    # Insert the "(4x)" substring between "@" and what comes after
-    updated_cpu_info_str = f"{parts[0]}@{parts[1]} ({num_cores}x)"
-
-    return updated_cpu_info_str
+    if len(parts) == 1:
+        return f"{parts[0]} ({num_cores}x)"
+    return f"{parts[0]}@{parts[1]} ({num_cores}x)"
 
 
 def _get_cpu_info() -> str:
@@ -63,12 +60,21 @@ def print_system_info(gpu_info: bool = True) -> None:
     print(f"Total CPU memory: {_get_byte_size(psutil.virtual_memory().total)}")
     print(f"Available CPU memory: {_get_byte_size(psutil.virtual_memory().available)}")
     if gpu_info:
-        import GPUtil
-
-        gpu = GPUtil.getGPUs()[0]
-        print(f"GPU: {gpu.name}")
-        print(f"Total GPU memory: {gpu.memoryTotal}MB")
-        print(f"Available GPU memory: {gpu.memoryFree}MB")
+        if torch.backends.mps.is_available():
+            print("GPU: Apple MPS (Metal)")
+        else:
+            try:
+                import GPUtil
+                gpus = GPUtil.getGPUs()
+                if gpus:
+                    gpu = gpus[0]
+                    print(f"GPU: {gpu.name}")
+                    print(f"Total GPU memory: {gpu.memoryTotal}MB")
+                    print(f"Available GPU memory: {gpu.memoryFree}MB")
+                else:
+                    print("GPU: None detected")
+            except Exception:
+                print("GPU: None detected")
     print(f"Platform: {platform.platform()}")
 
 

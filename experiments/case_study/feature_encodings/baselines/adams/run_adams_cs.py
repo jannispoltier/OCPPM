@@ -45,7 +45,7 @@ cs_adams_config = {
     "verbose": True,
     "track_time": True,
     "skip_cache": False,
-    "device": torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+    "device": torch.device("mps" if torch.backends.mps.is_available() else "cpu"),
     "squeeze": True,
 }
 
